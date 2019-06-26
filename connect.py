@@ -7,3 +7,4 @@ device = adb_commands.AdbCommands()
 device.ConnectDevice(rsa_keys=[signer])
 # for i in range(10):
 #   print(device.Shell('echo %d' % i))
+
