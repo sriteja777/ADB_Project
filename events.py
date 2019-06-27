@@ -22,13 +22,13 @@ def generate_cmd():
         cmd += '; '
 
 
-def write_cmd():
-    file = open('cmd.sh', 'w')
-    file.write(cmd)
+def write_cmd(filepath):
+    with open(filepath, 'w') as f:
+        f.write(cmd)
 
 
-def play_event(device):
-    device.push("cmd.sh", "/data/local/tmp/cmd.sh")
+def play_event(device, file):
+    device.push(file, "/data/local/tmp/cmd.sh")
     device.shell("sh /data/local/tmp/cmd.sh")
 
 
@@ -47,7 +47,7 @@ def event_handler(connection):
     connection.close()
 
 
-def record_event(device, timeout=5):
+def record_event(device, filepath, timeout=5):
     global event, cmd
     event = ""
     cmd = ""
@@ -61,7 +61,7 @@ def record_event(device, timeout=5):
     # print(event)
     generate_cmd()
     # print(cmd)
-    write_cmd()
+    write_cmd(filepath)
 
 signal.signal(signal.SIGALRM, handler=sig_handler)
 if __name__ == "__main__":
@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
     device = client.device("10.42.0.231:5555")
     signal.signal(signal.SIGALRM, handler=sig_handler)
-    record_event(device)
-    play_event(device)
+    record_event(device, "cmd.sh")
+    play_event(device, "cmd.sh")
 
 # print(event)
