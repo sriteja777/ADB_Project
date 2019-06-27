@@ -1,10 +1,20 @@
+#! /usr/bin/env python3
+
 import os
 import sys
 from subprocess import call
+
+
+BIN_DIR = os.path.dirname(os.path.realpath(__file__)) + '/'
+APP_DIR = os.path.abspath(os.path.join(BIN_DIR, os.pardir)) + '/'
+# print(BIN_DIR)
+# print(APP_DIR)
+sys.path.insert(0, APP_DIR)
+
 import events
 from adb.client import Client as AdbClient
 
-SCRIPTS_DIR = './scripts/'
+SCRIPTS_DIR = APP_DIR + 'scripts/'
 UNLOCK_SCRIPT = SCRIPTS_DIR + 'unlock_phone.sh'
 PROPERTIES_SCRIPT = SCRIPTS_DIR + 'get_device_properties.sh'
 SIZE_SCRIPT = SCRIPTS_DIR + 'get_screen_size.sh'
@@ -12,7 +22,7 @@ TYPE_SCRIPT = SCRIPTS_DIR + 'type.sh'
 SYNC_SCRIPT = SCRIPTS_DIR + 'sync_contacts.sh'
 
 if len(sys.argv) < 2:
-    print("Usage: python3 main.py [commands] [flags]")
+    print("Usage: phone [commands] [flags]")
     exit(1)
 
 arg = sys.argv[1]
@@ -43,4 +53,3 @@ elif arg == "record":
     events.record_event(device)
 elif arg == "play":
     events.play_event(device)
-
