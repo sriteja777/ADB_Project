@@ -21,6 +21,8 @@ SIZE_SCRIPT = SCRIPTS_DIR + 'get_screen_size.sh'
 TYPE_SCRIPT = SCRIPTS_DIR + 'type.sh'
 SYNC_SCRIPT = SCRIPTS_DIR + 'sync_contacts.sh'
 
+cmd_file_path = APP_DIR + "cmd.sh"
+
 if len(sys.argv) < 2:
     print("Usage: phone [commands] [flags]")
     exit(1)
@@ -36,7 +38,10 @@ if len(devices) == 0:
 device = devices[0]
 
 if arg == "unlock":
-    call(UNLOCK_SCRIPT)
+    if len(sys.argv) == 2:
+        call(UNLOCK_SCRIPT)
+    elif len(sys.argv) == 3:
+        call([UNLOCK_SCRIPT, sys.argv[2]])
 elif arg == "properties":
     call(PROPERTIES_SCRIPT)
 elif arg == "size":
@@ -50,6 +55,7 @@ elif arg == "type":
 elif arg == "sync":
     call(SYNC_SCRIPT)
 elif arg == "record":
-    events.record_event(device)
+
+    events.record_event(device, cmd_file_path)
 elif arg == "play":
-    events.play_event(device)
+    events.play_event(device, cmd_file_path)
